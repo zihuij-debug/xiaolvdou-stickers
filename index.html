@@ -285,64 +285,247 @@
         color: var(--muted);
       }
 
+      .ip-section {
+        position: relative;
+        overflow: hidden;
+        color: var(--white);
+        background:
+          linear-gradient(135deg, #102718 0 34%, #1e6f34 34% 58%, #ff745f 58% 73%, #f7c948 73% 100%);
+        border-top: 3px solid var(--ink);
+        border-bottom: 3px solid var(--ink);
+      }
+
+      .ip-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.08) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
+        background-size: 42px 42px;
+        opacity: 0.55;
+        pointer-events: none;
+      }
+
+      .ip-section::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        bottom: -70px;
+        width: 42vw;
+        max-width: 620px;
+        height: 180px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(23, 34, 27, 0.7) 0 16px,
+          rgba(23, 34, 27, 0) 16px 32px
+        );
+        transform: rotate(-8deg);
+        pointer-events: none;
+      }
+
       .ip-grid {
+        position: relative;
         display: grid;
-        grid-template-columns: 0.9fr 1.1fr;
-        gap: 28px;
+        z-index: 1;
+        grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+        gap: clamp(22px, 4vw, 46px);
         align-items: stretch;
         max-width: 1180px;
         margin: 0 auto;
       }
 
-      .ip-panel,
-      .detail-panel {
+      .ip-grid::before {
+        content: "IP";
+        position: absolute;
+        top: -34px;
+        left: -8px;
+        z-index: -1;
+        color: rgba(255, 255, 255, 0.1);
+        font-size: clamp(110px, 18vw, 260px);
+        font-weight: 1000;
+        line-height: 0.75;
+        -webkit-text-stroke: 2px rgba(255, 255, 255, 0.18);
+      }
+
+      .ip-panel {
+        position: relative;
+        min-height: 560px;
+        border: 3px solid var(--ink);
+        border-radius: 8px;
+        background: var(--lemon);
+        overflow: hidden;
+        box-shadow: 12px 12px 0 #0b1d12;
+        isolation: isolate;
+      }
+
+      .ip-panel::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        z-index: -1;
+        background: repeating-linear-gradient(
+          132deg,
+          rgba(255, 255, 255, 0.72) 0 12px,
+          rgba(255, 255, 255, 0) 12px 25px
+        );
+        transform: rotate(-3deg);
+      }
+
+      .ip-panel::after {
+        content: "MAIN CHARACTER";
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 3;
+        padding: 7px 10px;
         border: 2px solid var(--ink);
         border-radius: 8px;
+        color: var(--ink);
         background: var(--white);
-        overflow: hidden;
-        box-shadow: 0 6px 0 var(--ink);
+        box-shadow: 4px 4px 0 var(--ink);
+        font-size: 12px;
+        font-weight: 950;
       }
 
       .ip-panel img {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
         height: 100%;
-        min-height: 390px;
         object-fit: cover;
-        object-position: center right;
+        object-position: 62% center;
+        filter: saturate(1.18) contrast(1.04);
       }
 
       .detail-panel {
-        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        padding: 8px 0 8px 6px;
       }
 
-      .detail-panel h2 {
-        font-size: clamp(30px, 4vw, 48px);
+      .ip-callout {
+        position: absolute;
+        z-index: 4;
+        display: grid;
+        gap: 2px;
+        max-width: min(230px, 70%);
+        padding: 12px 14px;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        color: var(--ink);
+        box-shadow: 5px 5px 0 var(--ink);
+        transform: rotate(-3deg);
+      }
+
+      .ip-callout b {
+        font-size: 14px;
         line-height: 1.1;
       }
 
+      .ip-callout span {
+        font-size: 13px;
+        font-weight: 750;
+        line-height: 1.35;
+      }
+
+      .ip-callout.energy {
+        left: 24px;
+        bottom: 34px;
+        background: var(--lemon);
+      }
+
+      .ip-callout.motion {
+        right: 22px;
+        top: 78px;
+        background: var(--sky);
+        transform: rotate(3deg);
+      }
+
+      .ip-pill {
+        margin-bottom: 16px;
+        border-color: var(--ink);
+        color: var(--ink);
+        background: var(--lemon);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .detail-panel h2 {
+        max-width: 9.5ch;
+        font-size: clamp(42px, 6.2vw, 82px);
+        line-height: 0.92;
+        text-shadow: 0 5px 0 rgba(23, 34, 27, 0.4);
+      }
+
+      .detail-panel h2 span {
+        display: block;
+        color: var(--lemon);
+      }
+
       .detail-panel > p {
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: 17px;
+        max-width: 580px;
+        margin-top: 22px;
+        color: #eff8ea;
+        font-size: clamp(17px, 2vw, 21px);
+        font-weight: 700;
+      }
+
+      .ip-slogan {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 22px;
+      }
+
+      .ip-slogan span {
+        padding: 7px 10px;
+        border: 2px solid rgba(23, 34, 27, 0.95);
+        border-radius: 8px;
+        color: var(--ink);
+        background: var(--white);
+        box-shadow: 3px 3px 0 rgba(23, 34, 27, 0.9);
+        font-size: 13px;
+        font-weight: 900;
       }
 
       .traits {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
-        margin-top: 28px;
+        margin-top: 30px;
       }
 
       .trait {
-        min-height: 96px;
-        padding: 16px;
-        border: 1px solid var(--line);
+        position: relative;
+        min-height: 116px;
+        padding: 16px 16px 16px 18px;
+        border: 2px solid var(--ink);
         border-radius: 8px;
-        background: #fbfff7;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 5px 5px 0 rgba(23, 34, 27, 0.75);
+      }
+
+      .trait b {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 10px;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: var(--coral);
+        font-size: 13px;
+        font-weight: 950;
       }
 
       .trait strong {
         display: block;
         margin-bottom: 6px;
+        font-size: 18px;
+        line-height: 1.2;
       }
 
       .trait span {
@@ -613,8 +796,47 @@
           grid-template-columns: 1fr;
         }
 
+        .ip-section {
+          background:
+            linear-gradient(160deg, #102718 0 46%, #1e6f34 46% 66%, #ff745f 66% 80%, #f7c948 80% 100%);
+        }
+
+        .ip-grid::before {
+          top: -18px;
+          font-size: clamp(92px, 34vw, 180px);
+        }
+
+        .ip-panel {
+          min-height: 430px;
+          box-shadow: 7px 7px 0 #0b1d12;
+        }
+
         .ip-panel img {
-          min-height: 280px;
+          object-position: 66% center;
+        }
+
+        .detail-panel {
+          padding: 22px 0 0;
+        }
+
+        .detail-panel h2 {
+          max-width: 9ch;
+          font-size: clamp(42px, 13vw, 68px);
+        }
+
+        .ip-callout {
+          max-width: 190px;
+          padding: 10px 11px;
+        }
+
+        .ip-callout.motion {
+          right: 14px;
+          top: 70px;
+        }
+
+        .ip-callout.energy {
+          left: 16px;
+          bottom: 18px;
         }
 
         .story {
@@ -664,33 +886,51 @@
         </div>
       </section>
 
-      <section class="section green" id="ip">
+      <section class="section ip-section" id="ip">
         <div class="ip-grid">
           <div class="ip-panel">
             <img src="assets/xiaolvdou-hero.png" alt="小绿豆 IP 主视觉" />
+            <div class="ip-callout motion">
+              <b>SPROUT MOVE</b>
+              <span>小芽负责所有动效爆点</span>
+            </div>
+            <div class="ip-callout energy">
+              <b>MEME ENERGY</b>
+              <span>聊天场景一秒入戏</span>
+            </div>
           </div>
           <div class="detail-panel">
-            <span class="pill">IP 核心设定</span>
-            <h2>一颗会卖萌、会拍短片的小绿豆</h2>
+            <span class="pill ip-pill">IP 核心设定</span>
+            <h2><span>一眼记住</span>这颗会闯祸的小绿豆</h2>
             <p>
-              小绿豆适合做轻松搞怪的内容主角：造型足够简单，表情变化空间大，放进聊天表情、短视频封面、剧情分镜里都容易识别。
+              不是普通可爱角色，而是自带“出道感”的表情包主角：豆形剪影够强，五官够大，动作够短，适合在聊天框、封面和 10 秒短片里快速抓住视线。
             </p>
+            <div class="ip-slogan">
+              <span>豆形剪影</span>
+              <span>头顶小芽</span>
+              <span>大眼腮红</span>
+              <span>短手短脚</span>
+            </div>
             <div class="traits">
               <div class="trait">
-                <strong>豆形身体</strong>
-                <span>圆润绿色轮廓，远看也能识别。</span>
+                <b>01</b>
+                <strong>远看就是绿豆</strong>
+                <span>圆润轮廓和高饱和绿色先建立记忆点。</span>
               </div>
               <div class="trait">
-                <strong>两片小芽</strong>
-                <span>头顶小芽是记忆点，也是动效切入点。</span>
+                <b>02</b>
+                <strong>小芽负责出场</strong>
+                <span>摇晃、弹跳、发光都从头顶小芽开始。</span>
               </div>
               <div class="trait">
-                <strong>大眼腮红</strong>
-                <span>适合夸张表情，天然亲近可爱。</span>
+                <b>03</b>
+                <strong>表情必须夸张</strong>
+                <span>大眼和腮红强化开心、震惊、委屈等情绪。</span>
               </div>
               <div class="trait">
-                <strong>短手短脚</strong>
-                <span>动作简单，方便做系列化表情。</span>
+                <b>04</b>
+                <strong>动作短促有梗</strong>
+                <span>挥手、摔倒、弹起，方便批量扩展表情包。</span>
               </div>
             </div>
           </div>
