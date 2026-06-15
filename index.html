@@ -618,6 +618,342 @@
         aspect-ratio: 9 / 16;
       }
 
+      .video-impact {
+        position: relative;
+        overflow: hidden;
+        color: var(--white);
+        background:
+          repeating-linear-gradient(
+            -12deg,
+            rgba(255, 255, 255, 0.08) 0 1px,
+            transparent 1px 18px
+          ),
+          linear-gradient(132deg, #101a12 0%, #183b24 48%, #0d140f 100%);
+        border-top: 4px solid var(--ink);
+        border-bottom: 4px solid var(--ink);
+      }
+
+      .video-impact::before {
+        content: "10s";
+        position: absolute;
+        top: 16px;
+        right: max(18px, calc((100% - 1180px) / 2));
+        color: rgba(247, 201, 72, 0.16);
+        font-size: 172px;
+        line-height: 0.8;
+        font-weight: 950;
+        pointer-events: none;
+      }
+
+      .video-impact::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 36px;
+        height: 34px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 116, 95, 0.9) 0 46px,
+          rgba(247, 201, 72, 0.95) 46px 92px,
+          rgba(84, 189, 232, 0.9) 92px 138px
+        );
+        clip-path: polygon(0 28%, 100% 0, 100% 72%, 0 100%);
+        opacity: 0.86;
+      }
+
+      .video-impact .story {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: minmax(280px, 460px) minmax(0, 1fr);
+        gap: 46px;
+      }
+
+      .video-poster-shell {
+        position: relative;
+        z-index: 0;
+        isolation: isolate;
+        padding: 18px 18px 24px;
+      }
+
+      .video-poster-shell::before,
+      .video-poster-shell::after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        width: 120px;
+        height: 120px;
+        border: 14px solid var(--lemon);
+        transform: rotate(18deg);
+      }
+
+      .video-poster-shell::before {
+        top: -12px;
+        left: -12px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+
+      .video-poster-shell::after {
+        right: -8px;
+        bottom: 26px;
+        border-left: 0;
+        border-top: 0;
+        border-color: var(--coral);
+      }
+
+      .video-impact .story-poster {
+        position: relative;
+        z-index: 1;
+        max-width: 430px;
+        border: 3px solid var(--white);
+        background: #071009;
+        box-shadow:
+          12px 12px 0 var(--coral),
+          22px 22px 0 rgba(0, 0, 0, 0.82);
+        transform: rotate(-2deg);
+        isolation: isolate;
+      }
+
+      .video-impact .story-poster::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 24%, transparent 70%, rgba(0, 0, 0, 0.42)),
+          repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.12) 0 1px,
+            transparent 1px 7px
+          );
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .video-impact .story-poster img {
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.035);
+      }
+
+      .timecode,
+      .motion-tag,
+      .play-ring {
+        position: absolute;
+        z-index: 2;
+      }
+
+      .timecode {
+        top: 14px;
+        left: 14px;
+        padding: 6px 9px;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.62);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .motion-tag {
+        right: 14px;
+        bottom: 16px;
+        padding: 8px 11px;
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        color: var(--ink);
+        background: var(--lemon);
+        box-shadow: 4px 4px 0 var(--ink);
+        font-size: 15px;
+        font-weight: 950;
+      }
+
+      .play-ring {
+        left: 50%;
+        top: 50%;
+        display: grid;
+        place-items: center;
+        width: 74px;
+        height: 74px;
+        border: 3px solid rgba(255, 255, 255, 0.92);
+        border-radius: 50%;
+        background: rgba(255, 116, 95, 0.78);
+        box-shadow: 0 0 0 9px rgba(255, 116, 95, 0.22);
+        transform: translate(-50%, -50%);
+      }
+
+      .play-ring span {
+        display: block;
+        width: 0;
+        height: 0;
+        margin-left: 5px;
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-left: 22px solid var(--white);
+      }
+
+      .video-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      .video-stats span {
+        min-height: 66px;
+        padding: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.68);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #dff7e3;
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .video-stats b {
+        display: block;
+        color: var(--lemon);
+        font-size: 21px;
+        line-height: 1.1;
+      }
+
+      .video-copy {
+        position: relative;
+        z-index: 1;
+        gap: 16px;
+      }
+
+      .video-copy h2 {
+        max-width: 680px;
+        color: var(--white);
+        font-size: 54px;
+        line-height: 1.02;
+        text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.45);
+      }
+
+      .video-copy p {
+        max-width: 640px;
+        color: #d8eadb;
+        font-size: 18px;
+        font-weight: 650;
+      }
+
+      .impact-pill {
+        border-color: var(--lemon);
+        color: var(--ink);
+        background: var(--lemon);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .impact-meter {
+        display: grid;
+        grid-template-columns: 0.8fr 1.25fr 0.95fr;
+        gap: 6px;
+        max-width: 620px;
+        margin: 2px 0 8px;
+      }
+
+      .impact-meter span {
+        display: grid;
+        min-height: 42px;
+        place-items: center;
+        border: 2px solid var(--ink);
+        color: var(--ink);
+        background: var(--white);
+        box-shadow: 0 4px 0 var(--ink);
+        font-weight: 950;
+      }
+
+      .impact-meter span:nth-child(2) {
+        color: var(--white);
+        background: var(--coral);
+      }
+
+      .impact-meter span:nth-child(3) {
+        background: var(--sky);
+      }
+
+      .video-impact .beats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .video-impact .beat {
+        grid-template-columns: 1fr;
+        min-height: 190px;
+        padding: 16px;
+        border: 2px solid var(--ink);
+        background: var(--white);
+        color: var(--ink);
+        box-shadow: 0 6px 0 rgba(0, 0, 0, 0.82);
+      }
+
+      .video-impact .beat-num {
+        width: fit-content;
+        min-width: 64px;
+        height: auto;
+        padding: 6px 8px;
+        border-radius: 6px;
+        color: var(--ink);
+        background: var(--lemon);
+        font-size: 14px;
+      }
+
+      .video-impact .beat:nth-child(2) .beat-num {
+        color: var(--white);
+        background: var(--coral);
+      }
+
+      .video-impact .beat:nth-child(3) .beat-num {
+        background: var(--sky);
+      }
+
+      .video-impact .beat strong {
+        margin-top: 4px;
+        font-size: 18px;
+        line-height: 1.24;
+      }
+
+      .video-impact .beat span {
+        color: #4f5c54;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .video-impact .story-poster {
+          animation: poster-hit 4.8s ease-in-out infinite;
+        }
+
+        .play-ring {
+          animation: play-pulse 1.8s ease-in-out infinite;
+        }
+      }
+
+      @keyframes poster-hit {
+        0%,
+        100% {
+          transform: rotate(-2deg) translateY(0);
+        }
+
+        50% {
+          transform: rotate(-1deg) translateY(-8px);
+        }
+      }
+
+      @keyframes play-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 9px rgba(255, 116, 95, 0.2);
+        }
+
+        50% {
+          box-shadow: 0 0 0 18px rgba(255, 116, 95, 0.08);
+        }
+      }
+
       .story-poster img {
         height: 100%;
         object-fit: cover;
@@ -847,6 +1183,98 @@
           max-width: 330px;
         }
 
+        .video-impact {
+          padding-top: 62px;
+          padding-bottom: 70px;
+        }
+
+        .video-impact::before {
+          top: 18px;
+          right: 16px;
+          font-size: 94px;
+        }
+
+        .video-impact::after {
+          bottom: 22px;
+          height: 24px;
+        }
+
+        .video-impact .story {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        .video-poster-shell {
+          width: min(100%, 360px);
+          margin: 0 auto;
+          padding: 10px 12px 18px;
+        }
+
+        .video-poster-shell::before,
+        .video-poster-shell::after {
+          width: 84px;
+          height: 84px;
+          border-width: 10px;
+        }
+
+        .video-impact .story-poster {
+          max-width: 310px;
+          box-shadow:
+            8px 8px 0 var(--coral),
+            15px 15px 0 rgba(0, 0, 0, 0.82);
+        }
+
+        .play-ring {
+          width: 58px;
+          height: 58px;
+        }
+
+        .play-ring span {
+          border-top-width: 11px;
+          border-bottom-width: 11px;
+          border-left-width: 18px;
+        }
+
+        .video-stats {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          margin-top: 18px;
+        }
+
+        .video-stats span {
+          min-height: 58px;
+          padding: 8px 6px;
+          font-size: 12px;
+        }
+
+        .video-stats b {
+          font-size: 18px;
+        }
+
+        .video-copy h2 {
+          font-size: 38px;
+          line-height: 1.06;
+        }
+
+        .video-copy p {
+          font-size: 16px;
+        }
+
+        .impact-meter {
+          grid-template-columns: 1fr;
+        }
+
+        .impact-meter span {
+          min-height: 38px;
+        }
+
+        .video-impact .beats {
+          grid-template-columns: 1fr;
+        }
+
+        .video-impact .beat {
+          min-height: 0;
+        }
+
         .closing {
           padding: 56px 20px;
         }
@@ -992,37 +1420,52 @@
         </div>
       </section>
 
-      <section class="section" id="video">
+      <section class="section video-impact" id="video">
         <div class="story">
-          <div class="image-frame story-poster">
-            <img src="assets/xiaolvdou-storyboard.png" alt="小绿豆 10 秒剧情短片分镜" />
+          <div class="video-poster-shell">
+            <div class="image-frame story-poster">
+              <img src="assets/xiaolvdou-storyboard.png" alt="小绿豆 10 秒剧情短片分镜" />
+              <div class="timecode" aria-hidden="true">00:00 / 00:10</div>
+              <div class="play-ring" aria-hidden="true"><span></span></div>
+              <div class="motion-tag" aria-hidden="true">贴纸风暴</div>
+            </div>
+            <div class="video-stats" aria-label="短片规格">
+              <span><b>9:16</b>竖屏冲击</span>
+              <span><b>3 段</b>爆点递进</span>
+              <span><b>Loop</b>眨眼循环</span>
+            </div>
           </div>
-          <div class="copy-stack">
-            <span class="pill">10 秒剧情小短片</span>
-            <h2>小绿豆也可以动起来</h2>
+          <div class="copy-stack video-copy">
+            <span class="pill impact-pill">10 秒剧情小短片</span>
+            <h2>前 3 秒抓眼，后 7 秒直接爆场</h2>
             <p>
-              短片方向保持可爱搞怪，不做复杂世界观，先用很短的情绪反转让角色成立。
+              把“灵感爆发”做成短视频里最有冲击的瞬间：安静开画、贴纸喷涌、镜头推近，最后眨眼定格，适合循环播放。
             </p>
+            <div class="impact-meter" aria-hidden="true">
+              <span>冷启动</span>
+              <span>爆发</span>
+              <span>定格</span>
+            </div>
             <div class="beats">
               <div class="beat">
-                <div class="beat-num">1</div>
+                <div class="beat-num">0-3s</div>
                 <div>
-                  <strong>0-3 秒：信心满满</strong>
-                  <span>小绿豆准备创作一套表情包，动作简单但状态明确。</span>
+                  <strong>低机位推近：信心满满</strong>
+                  <span>桌面安静、灯光聚焦，小绿豆抬笔准备开画，先把观众视线锁住。</span>
                 </div>
               </div>
               <div class="beat">
-                <div class="beat-num">2</div>
+                <div class="beat-num">3-7s</div>
                 <div>
-                  <strong>3-7 秒：笑点反转</strong>
-                  <span>灵感突然爆发，表情包飞得到处都是，画面进入搞怪节奏。</span>
+                  <strong>贴纸爆炸：画面瞬间失控</strong>
+                  <span>表情包从画板喷出来，前景飞贴纸、背景晃动，节奏一下拉满。</span>
                 </div>
               </div>
               <div class="beat">
-                <div class="beat-num">3</div>
+                <div class="beat-num">7-10s</div>
                 <div>
-                  <strong>7-10 秒：可爱收尾</strong>
-                  <span>小绿豆拿出最终成片，眨眼展示成果，适合做循环结尾。</span>
+                  <strong>手机定格：一眨眼就循环</strong>
+                  <span>镜头切到成片预览，小绿豆眨眼指向屏幕，结尾可直接回到开场。</span>
                 </div>
               </div>
             </div>
