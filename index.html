@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小绿豆 AIGC 表情包与 10 秒短片</title>
+    <style>
+      :root {
+        --bean: #78c943;
+        --bean-dark: #1f7a39;
+        --coral: #ff745f;
+        --sky: #54bde8;
+        --lemon: #f7c948;
+        --ink: #17221b;
+        --muted: #5f6b64;
+        --paper: #fffdf7;
+        --line: #dce8d8;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Microsoft YaHei", Arial, sans-serif;
+        line-height: 1.6;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .topbar {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 16px min(5vw, 64px);
+        background: rgba(255, 253, 247, 0.86);
+        border-bottom: 1px solid rgba(220, 232, 216, 0.8);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 50% 48% 52% 46%;
+        background: var(--bean);
+        border: 2px solid var(--bean-dark);
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .brand-mark::before,
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        top: -8px;
+        width: 14px;
+        height: 9px;
+        background: #8eda4e;
+        border: 2px solid var(--bean-dark);
+        border-radius: 100% 10% 100% 10%;
+      }
+
+      .brand-mark::before {
+        left: 5px;
+        transform: rotate(-26deg);
+      }
+
+      .brand-mark::after {
+        right: 4px;
+        transform: rotate(28deg);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .nav a:hover {
+        color: var(--bean-dark);
+      }
+
+      .hero {
+        min-height: 88vh;
+        padding: 120px min(5vw, 64px) 56px;
+        display: grid;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        background-image:
+          linear-gradient(90deg, rgba(255, 253, 247, 0.97) 0%, rgba(255, 253, 247, 0.9) 37%, rgba(255, 253, 247, 0.22) 68%),
+          url("assets/xiaolvdou-hero.png");
+        background-size: cover;
+        background-position: center right;
+      }
+
+      .hero-inner {
+        width: min(650px, 100%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        color: var(--bean-dark);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 32px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--coral);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 11ch;
+        font-size: clamp(48px, 7vw, 92px);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 560px;
+        margin-top: 26px;
+        color: #334239;
+        font-size: clamp(18px, 2.1vw, 24px);
+        font-weight: 650;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        font-weight: 850;
+        background: var(--white);
+        box-shadow: 0 4px 0 var(--ink);
+      }
+
+      .button.primary {
+        background: var(--lemon);
+      }
+
+      .section {
+        padding: 76px min(5vw, 64px);
+      }
+
+      .section.alt {
+        background: #eef9ff;
+        border-top: 1px solid #d5edf7;
+        border-bottom: 1px solid #d5edf7;
+      }
+
+      .section.green {
+        background: #f0f8ea;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 32px;
+        max-width: 1180px;
+        margin: 0 auto 32px;
+      }
+
+      .section-head h2 {
+        font-size: clamp(30px, 4vw, 52px);
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      .section-head p {
+        max-width: 450px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .capabilities {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .cap-card {
+        min-height: 250px;
+        padding: 24px;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 6px 0 var(--ink);
+      }
+
+      .cap-card:nth-child(1) {
+        border-color: var(--bean-dark);
+      }
+
+      .cap-card:nth-child(2) {
+        border-color: #c84b3d;
+      }
+
+      .cap-card:nth-child(3) {
+        border-color: #217aa2;
+      }
+
+      .cap-index {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        margin-bottom: 24px;
+        border-radius: 50%;
+        color: var(--ink);
+        background: var(--lemon);
+        border: 2px solid var(--ink);
+        font-weight: 900;
+      }
+
+      .cap-card h3 {
+        margin-bottom: 12px;
+        font-size: 23px;
+        line-height: 1.2;
+      }
+
+      .cap-card p {
+        color: var(--muted);
+      }
+
+      .ip-grid {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 28px;
+        align-items: stretch;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .ip-panel,
+      .detail-panel {
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        background: var(--white);
+        overflow: hidden;
+        box-shadow: 0 6px 0 var(--ink);
+      }
+
+      .ip-panel img {
+        height: 100%;
+        min-height: 390px;
+        object-fit: cover;
+        object-position: center right;
+      }
+
+      .detail-panel {
+        padding: 28px;
+      }
+
+      .detail-panel h2 {
+        font-size: clamp(30px, 4vw, 48px);
+        line-height: 1.1;
+      }
+
+      .detail-panel > p {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .traits {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .trait {
+        min-height: 96px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfff7;
+      }
+
+      .trait strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .trait span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .showcase {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 28px;
+        max-width: 1180px;
+        margin: 0 auto;
+        align-items: center;
+      }
+
+      .image-frame {
+        overflow: hidden;
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 6px 0 var(--ink);
+      }
+
+      .image-frame.stickers {
+        aspect-ratio: 16 / 10;
+      }
+
+      .image-frame.stickers img {
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .copy-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .pill {
+        display: inline-flex;
+        width: fit-content;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--bean-dark);
+        background: #f6fff0;
+        font-size: 14px;
+        font-weight: 850;
+      }
+
+      .copy-stack h2 {
+        font-size: clamp(30px, 4vw, 48px);
+        line-height: 1.1;
+      }
+
+      .copy-stack p {
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .tag {
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        color: #334239;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .story {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 32px;
+        max-width: 1180px;
+        margin: 0 auto;
+        align-items: center;
+      }
+
+      .story-poster {
+        max-width: 430px;
+        margin: 0 auto;
+        aspect-ratio: 9 / 16;
+      }
+
+      .story-poster img {
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .beats {
+        display: grid;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .beat {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 18px;
+        border: 1px solid #cfe4ee;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .beat-num {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--sky);
+        border: 2px solid var(--ink);
+        box-shadow: 0 3px 0 var(--ink);
+        font-weight: 900;
+      }
+
+      .beat strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .beat span {
+        color: var(--muted);
+      }
+
+      .workflow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .step {
+        min-height: 154px;
+        padding: 18px;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+      }
+
+      .step b {
+        color: var(--coral);
+      }
+
+      .step strong {
+        display: block;
+        margin: 8px 0;
+        font-size: 18px;
+      }
+
+      .step span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .closing {
+        padding: 74px min(5vw, 64px);
+        color: var(--white);
+        background: #163720;
+      }
+
+      .closing-inner {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 28px;
+        align-items: center;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .closing h2 {
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 1.08;
+      }
+
+      .closing p {
+        max-width: 680px;
+        margin-top: 14px;
+        color: #cce4d0;
+        font-size: 17px;
+      }
+
+      .package {
+        min-width: 270px;
+        padding: 22px;
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      .package strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+
+      .package span {
+        color: var(--muted);
+      }
+
+      footer {
+        padding: 22px min(5vw, 64px);
+        color: #6d7a72;
+        background: #102718;
+        font-size: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .topbar {
+          position: sticky;
+          padding: 14px 18px;
+        }
+
+        .nav {
+          display: none;
+        }
+
+        .hero {
+          min-height: 84vh;
+          padding: 74px 20px 36px;
+          background-image:
+            linear-gradient(180deg, rgba(255, 253, 247, 0.98) 0%, rgba(255, 253, 247, 0.82) 55%, rgba(255, 253, 247, 0.2) 100%),
+            url("assets/xiaolvdou-hero.png");
+          background-position: center bottom;
+        }
+
+        .hero-inner {
+          padding-bottom: 38vh;
+        }
+
+        h1 {
+          font-size: clamp(44px, 14vw, 68px);
+        }
+
+        .section {
+          padding: 54px 20px;
+        }
+
+        .section-head,
+        .showcase,
+        .story,
+        .ip-grid,
+        .closing-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head {
+          align-items: start;
+        }
+
+        .capabilities,
+        .workflow {
+          grid-template-columns: 1fr;
+        }
+
+        .traits {
+          grid-template-columns: 1fr;
+        }
+
+        .ip-panel img {
+          min-height: 280px;
+        }
+
+        .story {
+          gap: 22px;
+        }
+
+        .story-poster {
+          max-width: 330px;
+        }
+
+        .closing {
+          padding: 56px 20px;
+        }
+
+        .package {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="小绿豆 AIGC">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>小绿豆 AIGC</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#ip">IP 设定</a>
+        <a href="#stickers">表情包</a>
+        <a href="#video">10 秒短片</a>
+        <a href="#workflow">制作流程</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="eyebrow">AI 视频 · 静态表情包 · 剧情小短片</div>
+          <h1>小绿豆 AIGC</h1>
+          <p class="hero-copy">
+            一个简约、可爱、特征明显的拟人化绿豆 IP。用 AIGC 快速扩展表情包、短视频分镜和 10 秒剧情小短片，让朋友一眼记住这个角色。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#stickers">看表情包样例</a>
+            <a class="button" href="#video">看短片分镜</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section green" id="ip">
+        <div class="ip-grid">
+          <div class="ip-panel">
+            <img src="assets/xiaolvdou-hero.png" alt="小绿豆 IP 主视觉" />
+          </div>
+          <div class="detail-panel">
+            <span class="pill">IP 核心设定</span>
+            <h2>一颗会卖萌、会拍短片的小绿豆</h2>
+            <p>
+              小绿豆适合做轻松搞怪的内容主角：造型足够简单，表情变化空间大，放进聊天表情、短视频封面、剧情分镜里都容易识别。
+            </p>
+            <div class="traits">
+              <div class="trait">
+                <strong>豆形身体</strong>
+                <span>圆润绿色轮廓，远看也能识别。</span>
+              </div>
+              <div class="trait">
+                <strong>两片小芽</strong>
+                <span>头顶小芽是记忆点，也是动效切入点。</span>
+              </div>
+              <div class="trait">
+                <strong>大眼腮红</strong>
+                <span>适合夸张表情，天然亲近可爱。</span>
+              </div>
+              <div class="trait">
+                <strong>短手短脚</strong>
+                <span>动作简单，方便做系列化表情。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="section-head">
+          <h2>可以先做三件事</h2>
+          <p>
+            用一个统一 IP 打通静态图、视频感内容和短剧情，先做轻量展示，再逐步扩成完整素材库。
+          </p>
+        </div>
+        <div class="capabilities">
+          <article class="cap-card">
+            <div class="cap-index">01</div>
+            <h3>AI 视频方向</h3>
+            <p>
+              把小绿豆放进竖屏短视频语境，做封面、分镜、角色动作和可发布的视频概念。
+            </p>
+          </article>
+          <article class="cap-card">
+            <div class="cap-index">02</div>
+            <h3>静态表情包</h3>
+            <p>
+              围绕聊天高频情绪做系列：开心、震惊、骄傲、大哭、犯困、加油，适合快速传播。
+            </p>
+          </article>
+          <article class="cap-card">
+            <div class="cap-index">03</div>
+            <h3>10 秒剧情小短片</h3>
+            <p>
+              用“三段式”小剧情：出场、反转、收尾，让角色有记忆点，也方便后续批量扩展。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section alt" id="stickers">
+        <div class="showcase">
+          <div class="image-frame stickers">
+            <img src="assets/xiaolvdou-stickers.png" alt="小绿豆静态表情包样例" />
+          </div>
+          <div class="copy-stack">
+            <span class="pill">静态表情包样例</span>
+            <h2>一套先从 6 个高频情绪开始</h2>
+            <p>
+              小绿豆的表情包走简约可爱路线，轮廓清楚、表情夸张，适合微信聊天、社群传播和短视频评论区配图。
+            </p>
+            <div class="tags">
+              <span class="tag">哈哈哈</span>
+              <span class="tag">震惊</span>
+              <span class="tag">有点骄傲</span>
+              <span class="tag">委屈大哭</span>
+              <span class="tag">困了</span>
+              <span class="tag">加油冲</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="video">
+        <div class="story">
+          <div class="image-frame story-poster">
+            <img src="assets/xiaolvdou-storyboard.png" alt="小绿豆 10 秒剧情短片分镜" />
+          </div>
+          <div class="copy-stack">
+            <span class="pill">10 秒剧情小短片</span>
+            <h2>小绿豆也可以动起来</h2>
+            <p>
+              短片方向保持可爱搞怪，不做复杂世界观，先用很短的情绪反转让角色成立。
+            </p>
+            <div class="beats">
+              <div class="beat">
+                <div class="beat-num">1</div>
+                <div>
+                  <strong>0-3 秒：信心满满</strong>
+                  <span>小绿豆准备创作一套表情包，动作简单但状态明确。</span>
+                </div>
+              </div>
+              <div class="beat">
+                <div class="beat-num">2</div>
+                <div>
+                  <strong>3-7 秒：笑点反转</strong>
+                  <span>灵感突然爆发，表情包飞得到处都是，画面进入搞怪节奏。</span>
+                </div>
+              </div>
+              <div class="beat">
+                <div class="beat-num">3</div>
+                <div>
+                  <strong>7-10 秒：可爱收尾</strong>
+                  <span>小绿豆拿出最终成片，眨眼展示成果，适合做循环结尾。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section green" id="workflow">
+        <div class="section-head">
+          <h2>轻量制作流程</h2>
+          <p>
+            当前页面可以作为第一版展示；后续只需要继续补素材，就能扩展成作品集或提案页。
+          </p>
+        </div>
+        <div class="workflow">
+          <div class="step">
+            <b>01</b>
+            <strong>定 IP</strong>
+            <span>统一小绿豆的形状、颜色、五官和标志小芽。</span>
+          </div>
+          <div class="step">
+            <b>02</b>
+            <strong>出表情</strong>
+            <span>按聊天场景生成高频情绪，先做静态图。</span>
+          </div>
+          <div class="step">
+            <b>03</b>
+            <strong>写短梗</strong>
+            <span>每条短片只保留一个反转或一个情绪点。</span>
+          </div>
+          <div class="step">
+            <b>04</b>
+            <strong>做分镜</strong>
+            <span>用三段式画面控制 10 秒节奏。</span>
+          </div>
+          <div class="step">
+            <b>05</b>
+            <strong>扩系列</strong>
+            <span>继续做节日、社群、职场和日常主题。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="closing-inner">
+          <div>
+            <h2>第一版可以先做成“小绿豆出道包”</h2>
+            <p>
+              6 张静态表情包、1 张 IP 主视觉、1 个 10 秒短片分镜，足够用来给朋友展示方向，也方便继续讨论下一批内容。
+            </p>
+          </div>
+          <div class="package">
+            <strong>起步组合</strong>
+            <span>IP 主视觉 / 表情包样例 / 短片分镜 / 中文展示页</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      小绿豆 AIGC 展示页 · 本地 HTML 单文件
+    </footer>
+  </body>
+</html>
